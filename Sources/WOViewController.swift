@@ -9,7 +9,8 @@
 import UIKit
 
 /// Window Overlay View Controller
-class WOViewController: UIViewController {
+//You can inherit this class to have your own PIP viewcontroller
+open class WOViewController: UIViewController {
 	var PIPRect: CGRect = WOMaintainerInfo.pipRect(size: WOMaintainerInfo.pipDefaultSize)
 	// UI
 	let pipCloseButton = UIButton(type: .custom)
@@ -26,15 +27,15 @@ class WOViewController: UIViewController {
 	// State
 	var validatingPanning = false
 	
-	init() {
+	public init() {
 		super.init(nibName: nil, bundle: nil)
 	}
 	
-	required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	override func viewDidLoad() {
+    override open func viewDidLoad() {
 		super.viewDidLoad()
 		// UI
 		view.layer.shadowOpacity = 0.3
@@ -73,9 +74,6 @@ class WOViewController: UIViewController {
 		view.addGestureRecognizer(tapGesture)
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-	}
 }
 
 // MARK: Action

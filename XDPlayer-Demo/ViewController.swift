@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import XDPlayer
 
 class ViewController: UIViewController {
 	
@@ -19,9 +20,14 @@ class ViewController: UIViewController {
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		delay(seconds: 2) {
-            let url = URL(string: "https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4")!
-			XDPlayer.play(url: url)
+        
+		delay(seconds: 1) {
+            
+            //let url = URL(string: "https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4")!
+			//XDPlayer.play(url: url)
+            
+            let vc = MyViewController(0)
+            WOMaintainer.show(vc: vc)
 		}
 	}
 	

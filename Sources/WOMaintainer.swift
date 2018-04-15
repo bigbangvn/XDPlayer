@@ -23,10 +23,19 @@ struct WOMaintainerInfo {
 	}
 }
 
-class WOMaintainer {
+public class WOMaintainer {
 	static var state: WOState = .out
 	static var vc: WOViewController?
-	static func show(vc: WOViewController) {
+    
+    static public func isShowing() -> Bool {
+        return self.state != .out || self.vc != nil
+    }
+    
+    static public func showingViewController() -> WOViewController? {
+        return self.vc
+    }
+    
+	static public func show(vc: WOViewController) {
 		guard let window = UIApplication.shared.keyWindow else { return }
 		if WOMaintainer.state != .out {
 			dismiss(completion: {
@@ -54,7 +63,7 @@ class WOMaintainer {
 		WOMaintainer.state = .fullscreen
 	}
 	
-	static func dismiss(completion: (()->())?) {
+	static public func dismiss(completion: (()->())?) {
         guard let vc = WOMaintainer.vc else { return }
 		UIView.animate(withDuration: 0.3, animations: {
 			vc.view.alpha = 0
@@ -68,7 +77,7 @@ class WOMaintainer {
 	}
 }
 
-func delay(seconds: Double, completion:@escaping ()->()) {
+public func delay(seconds: Double, completion:@escaping ()->()) {
 	let dispatchTime: DispatchTime = DispatchTime.now() + Double(Int64(seconds * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
 	DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: {
 		completion()
