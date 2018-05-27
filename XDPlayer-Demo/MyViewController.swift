@@ -31,4 +31,20 @@ class MyViewController: WOViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func didBeginPan() {
+        super.didBeginPan()
+        print("\(#function)")
+    }
+    
+    override func didEnterFullScreen() {
+        super.didEnterFullScreen()
+        print("\(#function)")
+    }
+    
+    
+    override func didEnterPIP() {
+        super.didEnterPIP()
+        print("\(#function)")
+    }
+    
 }

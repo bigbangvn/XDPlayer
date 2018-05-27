@@ -84,6 +84,8 @@ extension WOViewController {
 		let targetTranslationY = min(max(translationY, 0), panningLength)
 		let percentage = min(1, targetTranslationY / self.panningLength)
 		switch gesture.state {
+        case .began:
+            self.didBeginPan()
 		case .changed:
 			if percentage > 0 && !validatingPanning {
 				validatingPanning = true
@@ -102,40 +104,12 @@ extension WOViewController {
 				if speed < 0 { speed = -speed }
 				if speed > 0 { speed = 0 }
 				speed = speed / ( panningLength * percentage )
-				self.willEnterFullScreen()
-				self.updateFrame(rect: UIScreen.main.bounds)
-				UIView.animate(
-					withDuration: 0.3,
-					delay: 0,
-					usingSpringWithDamping: 1,
-					initialSpringVelocity: speed,
-					options: [],
-					animations: {
-						window.layoutIfNeeded()
-					},
-					completion: { [weak self] _ in
-						self?.didEnterFullScreen()
-					}
-				)
+				self.showFull(speed)
 			} else {
 				var speed = gesture.velocity(in: window).y
 				if speed < 0 { speed = 0 }
 				speed = speed / ( panningLength * (1 - percentage) )
-				self.willEnterPIP()
-				self.updateFrame(rect: self.PIPRect)
-				UIView.animate(
-					withDuration: 0.3,
-					delay: 0,
-					usingSpringWithDamping: 1,
-					initialSpringVelocity: speed,
-					options: [],
-					animations: {
-						window.layoutIfNeeded()
-					},
-					completion: { _ in
-						self.didEnterPIP()
-					}
-				)
+				self.showPIP(speed)
 			}
 		default: break
 		}
@@ -190,7 +164,7 @@ extension WOViewController {
         self.tapGesture.isEnabled = false
     }
 
-    @objc func didEnterFullScreen() {
+    @objc open func didEnterFullScreen() {
         WOMaintainer.state = .fullscreen
         self.transitionPanGesture.isEnabled = true
     }
@@ -199,7 +173,7 @@ extension WOViewController {
         self.transitionPanGesture.isEnabled = false
     }
 
-    @objc func didEnterPIP() {
+    @objc open func didEnterPIP() {
         WOMaintainer.state = .pip
         self.tapGesture.isEnabled = true
         self.hangAroundPanGesture.isEnabled = true
@@ -210,6 +184,59 @@ extension WOViewController {
     }
 
     @objc func didEnterOut() {
+    }
+    
+    // MARK: BangNT
+    @objc open func didBeginPan() {
+        
+    }
+    
+    @objc public func showFull(_ speed: CGFloat, animated: Bool = true) {
+        guard let window = UIApplication.shared.keyWindow else { return }
+        self.willEnterFullScreen()
+        self.updateFrame(rect: UIScreen.main.bounds)
+        if (animated) {
+            UIView.animate(
+                withDuration: 0.3,
+                delay: 0,
+                usingSpringWithDamping: 1,
+                initialSpringVelocity: speed,
+                options: [],
+                animations: {
+                    window.layoutIfNeeded()
+            },
+                completion: { [weak self] _ in
+                    self?.didEnterFullScreen()
+                }
+            )
+        } else {
+            window.layoutIfNeeded()
+            self.didEnterFullScreen()
+        }
+    }
+    
+    @objc public func showPIP(_ speed: CGFloat, animated: Bool = true) {
+        guard let window = UIApplication.shared.keyWindow else { return }
+        self.willEnterPIP()
+        self.updateFrame(rect: self.PIPRect)
+        if animated {
+            UIView.animate(
+                withDuration: 0.3,
+                delay: 0,
+                usingSpringWithDamping: 1,
+                initialSpringVelocity: speed,
+                options: [],
+                animations: {
+                    window.layoutIfNeeded()
+            },
+                completion: { _ in
+                    self.didEnterPIP()
+            }
+            )
+        } else {
+            window.layoutIfNeeded()
+            self.didEnterPIP()
+        }
     }
 }
 

@@ -28,6 +28,7 @@ class ViewController: UIViewController {
             
             let vc = MyViewController(0)
             WOMaintainer.show(vc: vc)
+            WOMaintainer.showingViewController()?.showPIP(0, animated: false)
 		}
 	}
 	

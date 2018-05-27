@@ -15,7 +15,7 @@ enum WOState {
 }
 
 struct WOMaintainerInfo {
-	static let pipDefaultSize = CGSize(width: 170, height: 96)
+	static let pipDefaultSize = CGSize(width: 150, height: 196)
 	static func pipRect(size: CGSize) -> CGRect {
 		let screenSize = UIScreen.main.bounds.size
 		let offset: CGFloat = 12
