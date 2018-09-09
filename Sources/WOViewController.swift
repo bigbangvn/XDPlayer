@@ -192,6 +192,9 @@ extension WOViewController {
     }
     
     @objc public func showFull(_ speed: CGFloat, animated: Bool = true) {
+        guard WOMaintainer.state != .fullscreen else {
+            return
+        }
         guard let window = UIApplication.shared.keyWindow else { return }
         self.willEnterFullScreen()
         self.updateFrame(rect: UIScreen.main.bounds)
@@ -216,6 +219,9 @@ extension WOViewController {
     }
     
     @objc public func showPIP(_ speed: CGFloat, animated: Bool = true) {
+        guard WOMaintainer.state != .pip else {
+            return
+        }
         guard let window = UIApplication.shared.keyWindow else { return }
         self.willEnterPIP()
         self.updateFrame(rect: self.PIPRect)
