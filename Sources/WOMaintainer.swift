@@ -19,7 +19,7 @@ struct WOMaintainerInfo {
 	static func pipRect(size: CGSize) -> CGRect {
 		let screenSize = UIScreen.main.bounds.size
 		let offset: CGFloat = 12
-		return CGRect(x: screenSize.width - offset - size.width, y: screenSize.height - offset - size.height, width: size.width, height: size.height)
+		return CGRect(x: screenSize.width - offset - size.width, y: offset, width: size.width, height: size.height)
 	}
 }
 
